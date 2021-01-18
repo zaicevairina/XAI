@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block title %} Результаты {% endblock %}
+{% block content %}
+{% csrf_token %}
+<div>
+    <div class="row">
+
+      <h6>
+        LIME: визуализация вклада различных входных параметров в результат работы модели на данном наблюдении
+      </h6>
+    	<iframe src="{{lime}}">
+      </iframe>
+      <h6>
+        SHAP
+      </h6>
+      <h6>
+        Эта картинка показывает, как каждая входная переменная способствует смещению прогноза от базового значения к выходному значению модели, уменьшая или увеличивая вероятность нашего класса.
+      </h6>
+      <iframe height="200px" src="{{shap_1}}">
+      </iframe>
+      <h6>
+        График для каждого наблюдения. Он позволяет увидеть интерпретации сразу для каждого наблюдения в датасете. Интерактивность также дает возможность посмотреть на эффект конкретного признака
+      </h6>
+      <iframe height="400px" src="{{shap_2}}">
+      </iframe>
+      <h6>
+        График важности входных параметров. Цвет соответствует значению класса, а ось x соответствует значению SHAP, что означает влияние на вероятность.
+      </h6>
+      <img src="{{shap_3}}">
+    </div>
+
+    <h5>
+      <!-- shap_4 описание -->
+    </h5>
+    <select name="field">
+      {% for field in fields %}
+      <option>
+        {{ field }}
+      </option>
+      {% endfor %}
+    </select>
+    <button type="button" id="selector">
+      получить данные
+    </button>
+    <img id="image"/>
+    <script>
+      const button = document.querySelector('#selector');
+      const select = document.querySelector('select');
+      const image = document.querySelector('#image');
+
+      image.addEventListener('load', () => {
+        image.scrollIntoView({behavior: 'smooth'})
+      })
+
+      button.addEventListener('click', () => {
+
+        const response = fetch(`${window.location.href}${select.value}`, {
+        })
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            image.setAttribute('src', data.shap_4);
+        });
+      })
+    </script>
+</div>
+{% endblock %}

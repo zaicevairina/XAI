@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %} Добавьте модель {% endblock %}
+{% block content %}
+{% csrf_token %}
+<div class="row">
+    <div class="row">
+			<span class="mb-3">Приложите CSV файл</span>
+    	<form method="POST" enctype="multipart/form-data">{% csrf_token %}
+				<div class="input-group mb-3">
+					<input type="file" class="form-control" id="inputGroupFile01" name="model_file">
+				</div>
+				<div class="input-group mb-3">
+					<span class="input-group-text" id="addon-wrapping">Название</span>
+					<input type="text" class="form-control" placeholder="Название" aria-label="Название" aria-describedby="addon-wrapping" name="title">
+				</div>
+				<div class="input-group flex-nowrap">
+					<button type="submit" class="btn btn-outline-secondary">Загрузка</button>
+				</div>
+    		<div>
+    			{{ msg }}
+    		</div>
+    	</form>
+    </div>
+</div>
+{% endblock %}
